@@ -13,9 +13,8 @@ router.delete("/", security(), eliminate);
 
 async function all(req, res, next) {
   try {
-    const items = await controller.all().then((items) => {
-      success(req, res, items, 200);
-    });
+    const items = await controller.all();
+    success(req, res, items, 200);
   } catch (err) {
     next(err);
   }
@@ -23,9 +22,8 @@ async function all(req, res, next) {
 
 async function one(req, res, next) {
   try {
-    const items = await controller.one(req.params.id).then((items) => {
-      success(req, res, items, 200);
-    });
+    const items = await controller.one(req.params.id);
+    success(req, res, items, 200);
   } catch (err) {
     next(err);
   }
