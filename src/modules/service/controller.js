@@ -1,5 +1,6 @@
 import mysql from "../../DB/mysql.js";
 const TABLE = "service";
+import { formatDate } from "../../utils/date.js";
 
 export default function (inyectedDB) {
   let db = inyectedDB || mysql;
@@ -21,16 +22,7 @@ export default function (inyectedDB) {
   }
 
   async function request(body) {
-    let today = new Date();
-
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    let year = today.getFullYear();
-
-    day = ("0" + day).slice(-2);
-    month = ("0" + month).slice(-2);
-
-    let date = `${year}-${month}-${day}`;
+    const date = formatDate(new Date());
     const data = {
       id: body.id,
       id_business: body.id_business,
@@ -46,16 +38,7 @@ export default function (inyectedDB) {
   }
 
   async function approve(body) {
-    let today = new Date();
-
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    let year = today.getFullYear();
-
-    day = ("0" + day).slice(-2);
-    month = ("0" + month).slice(-2);
-
-    let date = `${year}-${month}-${day}`;
+    const date = formatDate(new Date());
     const data = {
       id: body.id,
       approved_by: body.approved_by,
@@ -70,16 +53,7 @@ export default function (inyectedDB) {
   }
 
   async function update(body) {
-    let today = new Date();
-
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    let year = today.getFullYear();
-
-    day = ("0" + day).slice(-2);
-    month = ("0" + month).slice(-2);
-
-    let date = `${year}-${month}-${day}`;
+    const date = formatDate(new Date());
     const data = {
       id: body.id,
       id_business: body.id_business,
