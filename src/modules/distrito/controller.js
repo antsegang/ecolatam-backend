@@ -1,6 +1,5 @@
 import mysql from "../../DB/mysql.js";
 const TABLE = "distrito";
-import auth from "../auth/index.js";
 import { formatDate } from "../../utils/date.js";
 
 export default function (inyectedDB) {

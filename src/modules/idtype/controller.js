@@ -1,6 +1,5 @@
 import mysql from "../../DB/mysql.js";
 const TABLE = "idtype";
-import auth from "../auth/index.js";
 import { formatDate } from "../../utils/date.js";
 
 export default function (inyectedDB) {
