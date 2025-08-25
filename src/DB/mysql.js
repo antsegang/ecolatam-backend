@@ -1,4 +1,4 @@
-import mysql from "mysql";
+import mysql from "mysql2";
 import { config } from "../config.js";
 
 const dbConfig = {
@@ -9,7 +9,7 @@ const dbConfig = {
   connectionLimit: 10, // ajusta según tus necesidades
 };
 
-const pool = mysql.createPool(dbConfig);
+const pool = mysql.createPool(dbConfig).promise();
 
 const allowedTables = new Set([
   "admin",
@@ -50,71 +50,43 @@ function validateTable(table) {
   return table;
 }
 
-function all(table) {
+async function all(table) {
   validateTable(table);
-  return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM ??", [table], (error, result) => {
-      return error ? reject(error) : resolve(result);
-    });
-  });
+  const [rows] = await pool.query("SELECT * FROM ??", [table]);
+  return rows;
 }
 
-function one(table, id) {
+async function one(table, id) {
   validateTable(table);
-  return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM ?? WHERE id = ?", [table, id], (error, result) => {
-      return error ? reject(error) : resolve(result);
-    });
-  });
+  const [rows] = await pool.query("SELECT * FROM ?? WHERE id = ?", [table, id]);
+  return rows;
 }
 
-function update(table, data, id) {
+async function update(table, data, id) {
   validateTable(table);
-  return new Promise((resolve, reject) => {
-    pool.query(
-      "UPDATE ?? SET ? WHERE id = ?",
-      [table, data, id],
-      (error, result) => {
-        return error ? reject(error) : resolve(result);
-      }
-    );
-  });
+  const [rows] = await pool.query("UPDATE ?? SET ? WHERE id = ?", [table, data, id]);
+  return rows;
 }
 
-function create(table, data) {
+async function create(table, data) {
   validateTable(table);
-  return new Promise((resolve, reject) => {
-    pool.query("INSERT INTO ?? SET ?", [table, data], (error, result) => {
-      return error ? reject(error) : resolve(result);
-    });
-  });
+  const [rows] = await pool.query("INSERT INTO ?? SET ?", [table, data]);
+  return rows;
 }
 
-function eliminate(table, data) {
+async function eliminate(table, data) {
   validateTable(table);
-  return new Promise((resolve, reject) => {
-    pool.query(
-      "DELETE FROM ?? WHERE id = ?",
-      [table, data.id],
-      (error, result) => {
-        return error ? reject(error) : resolve(result);
-      }
-    );
-  });
+  const [rows] = await pool.query("DELETE FROM ?? WHERE id = ?", [table, data.id]);
+  return rows;
 }
 
-function query(query, consult) {
-  return new Promise((resolve, reject) => {
-    const callback = (error, result) => {
-      return error ? reject(error) : resolve(result);
-    };
-
-    if (consult !== undefined) {
-      pool.query(query, consult, callback);
-    } else {
-      pool.query(query, callback);
-    }
-  });
+async function query(sql, consult) {
+  if (consult !== undefined) {
+    const [rows] = await pool.query(sql, consult);
+    return rows;
+  }
+  const [rows] = await pool.query(sql);
+  return rows;
 }
 
 export default {
