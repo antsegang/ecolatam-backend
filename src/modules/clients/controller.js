@@ -20,8 +20,10 @@ export default function (inyectedDB) {
     return db.create(TABLE, body);
   }
 
-  function update(body) {
-    return db.update(TABLE, body);
+  function update(body = {}, idParam) {
+    const { id: bodyId, ...data } = body;
+    const id = idParam || bodyId;
+    return db.update(TABLE, data, id);
   }
 
   return {

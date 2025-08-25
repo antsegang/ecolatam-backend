@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", all);
 router.get("/:id", one);
 router.post("/", create);
-router.put("/", update);
+router.put("/:id", update);
 router.delete("/", eliminate);
 
 async function all(req, res, next) {
@@ -51,7 +51,7 @@ async function create(req, res, next) {
 async function update(req, res, next) {
   let message = "";
   try {
-    const items = await controller.update(req.body);
+    await controller.update(req.body, req.params.id);
     message = "Item actualizado con éxito";
     success(req, res, message, 201);
   } catch (err) {
