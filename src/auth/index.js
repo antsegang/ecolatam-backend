@@ -4,9 +4,10 @@ import { error as createError } from "../middlewares/errors.js";
 import db from "./../DB/mysql.js";
 
 const secret = config.jwt.secret;
+const expiresIn = config.jwt.expiresIn;
 
 function assignToken(data) {
-  return jwt.sign(data, secret);
+  return jwt.sign(data, secret, { expiresIn });
 }
 
 function verifyToken(token) {
