@@ -29,3 +29,6 @@ coverage
 *.env
 
 *.tsbuildinfo
+
+# Local database dumps
+*.sql
