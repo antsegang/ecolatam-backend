@@ -14,7 +14,7 @@ function verifyToken(token) {
 }
 
 async function isUserInTable(userId, table) {
-  const data = await db.query1(`SELECT * FROM ${table}`);
+  const data = await db.query(`SELECT * FROM ${table}`);
   return data.some((item) => item.id_user === userId);
 }
 
