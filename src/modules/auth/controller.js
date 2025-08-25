@@ -22,8 +22,12 @@ export default function (inyectedDB) {
       if (passwordMatch) {
         var id = data[0].id;
         var datos = data[0];
-        //Generar un token
-        const token = auth.assignToken({ ...data[0] });
+        //Generar un token solo con campos necesarios
+        const token = auth.assignToken({
+          id: data[0].id,
+          username: data[0].username,
+          role: data[0].role,
+        });
         return { token, id, datos };
       } else {
         throw new Error("Información inválida");
@@ -60,10 +64,7 @@ export default function (inyectedDB) {
     }
 
     if (data.created_at) {
-      authData.created_at = await bcrypt.hash(
-        data.created_at.toString(),
-        SALT_ROUNDS
-      );
+      authData.created_at = data.created_at;
     }
     return db.create(TABLE, authData);
   }

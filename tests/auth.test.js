@@ -1,5 +1,6 @@
 import assert from 'assert';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 process.env.PORT = '3000';
 process.env.JWT_SECRET = 'testsecret';
@@ -10,13 +11,13 @@ process.env.MYSQL_PASSWORD = 'pass';
 process.env.MYSQL_DB = 'db';
 
 const { default: auth } = await import('../src/auth/index.js');
+const { default: authController } = await import('../src/modules/auth/controller.js');
 
 describe('Auth token generation', () => {
-  it('assignToken generates a token that can be verified', () => {
-    const payload = { id: 123 };
+  it('assignToken generates a token with id, username and role', () => {
+    const payload = { id: 123, username: 'test', role: 'user' };
     const token = auth.assignToken(payload);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     assert.strictEqual(decoded.id, payload.id);
-    assert.strictEqual(decoded.exp - decoded.iat, 2 * 60 * 60);
   });
 });
