@@ -12,7 +12,7 @@ export const config = {
   mysql: {
     host: process.env.MYSQL_HOST || [YOUR_MYSQL_HOST],
     user: process.env.MYSQL_USER || [YOUR_MYSQL_USER],
-    password: process.env.MYSQL_PASSWORD || [YOUR_MYSQL_PASSWORD]
+    password: process.env.MYSQL_PASSWORD || [YOUR_MYSQL_PASSWORD],
     database: process.env.MYSQL_DB || [YOUR_MYSQL_DB],
   },
 };
