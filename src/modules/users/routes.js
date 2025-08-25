@@ -2,13 +2,15 @@ import express from "express";
 import { success } from "../../net/responses.js";
 import controller from "./index.js";
 import security from "./security.js";
+import { validate } from "../../middlewares/validation.js";
+import { createUserSchema, updateUserSchema } from "./validator.js";
 
 const router = express.Router();
 
 router.get("/", all);
 router.get("/:id", one);
-router.post("/", create);
-router.put("/", security(), update);
+router.post("/", validate(createUserSchema), create);
+router.put("/", security(), validate(updateUserSchema), update);
 router.delete("/", eliminate);
 
 async function all(req, res, next) {
