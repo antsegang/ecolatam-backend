@@ -20,4 +20,12 @@ describe('Auth token generation', () => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     assert.strictEqual(decoded.id, payload.id);
   });
+
+  it('assignToken applies configured expiration time', () => {
+    const payload = { id: 456 };
+    const token = auth.assignToken(payload);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const duration = decoded.exp - decoded.iat;
+    assert.strictEqual(duration, 2 * 60 * 60); // 2 hours in seconds
+  });
 });

@@ -11,6 +11,8 @@ export const config = {
   jwt: {
     // Use null to force the consumer to provide a proper secret
     secret: process.env.JWT_SECRET || null,
+    // Token expiration time, defaults to 1 hour
+    expiresIn: process.env.JWT_EXPIRES_IN || "1h",
   },
   mysql: {
     host: process.env.MYSQL_HOST || "localhost",
