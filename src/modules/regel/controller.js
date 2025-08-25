@@ -1,4 +1,5 @@
 import mysql from "../../DB/mysql.js";
+import logger from "../../utils/logger.js";
 const TABLE = "regel";
 import { formatDate } from "../../utils/date.js";
 
@@ -28,7 +29,7 @@ export default function (inyectedDB) {
     };
 
     const response = await db.create(TABLE, data);
-    console.log(response);
+    logger.debug(response);
   }
 
   async function approve(body) {
@@ -43,7 +44,7 @@ export default function (inyectedDB) {
     const id = body.id;
 
     const response = await db.update(TABLE, data, id);
-    console.log(response);
+    logger.debug(response);
   }
 
   async function renew(body) {
@@ -56,7 +57,7 @@ export default function (inyectedDB) {
     };
 
     const response = await db.create(TABLE, data);
-    console.log(response);
+    logger.debug(response);
   }
 
   return {

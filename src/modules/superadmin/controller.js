@@ -1,4 +1,5 @@
 import mysql from "../../DB/mysql.js";
+import logger from "../../utils/logger.js";
 const TABLE = "superadmin";
 import { formatDate } from "../../utils/date.js";
 
@@ -27,7 +28,7 @@ export default function (inyectedDB) {
     };
 
     const response = await db.create(TABLE, data);
-    console.log(response);
+    logger.debug(response);
   }
 
   return {

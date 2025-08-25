@@ -1,4 +1,5 @@
 import mysql from "../../DB/mysql.js";
+import logger from "../../utils/logger.js";
 const TABLE = "users";
 import auth from "../auth/index.js";
 import { formatDate } from "../../utils/date.js";
@@ -51,7 +52,7 @@ export default function (inyectedDB) {
     };
 
     const response = await db.create(TABLE, user);
-    console.log(response);
+    logger.debug(response);
 
     var insertId = 0;
     if (body.id === 0) {
@@ -94,7 +95,7 @@ export default function (inyectedDB) {
     const id = body.id;
 
     const response = await db.update(TABLE, user, id);
-    console.log(response);
+    logger.debug(response);
 
     var insertId = 0;
     if (body.id === 0) {
