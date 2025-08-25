@@ -15,14 +15,20 @@ function verifyToken(token) {
 }
 
 async function isUserInTable(userId, table) {
-  const data = await db.query(`SELECT * FROM ${table}`);
-  return data.some((item) => item.id_user === userId);
+  const data = await db.query(
+    "SELECT 1 FROM ?? WHERE id_user = ? LIMIT 1",
+    [table, userId]
+  );
+  return data.length > 0;
 }
 
 async function verifyOwnership(req, id, table) {
   const { id: userId } = decodifyHeader(req);
-  const data = await db.query(`SELECT * FROM ${table} WHERE ?`, { id });
-  const ownerId = data[0].id_user;
+  const data = await db.query(
+    "SELECT id_user FROM ?? WHERE id = ? LIMIT 1",
+    [table, id]
+  );
+  const ownerId = data[0]?.id_user;
   if (ownerId !== userId) {
     throw createError("No tienes privilegios para hacer esto", 401);
   }
@@ -96,7 +102,7 @@ const checkKYCUser = {
     if (decodified.id !== id) {
       throw createError("No tienes privilegios para hacer esto", 401);
     }
-    const data = await db.query("SELECT * FROM ukyc WHERE id_user = ?", id);
+    const data = await db.query("SELECT * FROM ukyc WHERE id_user = ?", [id]);
     const kyc = data[0];
     if (kyc.approve !== 1) {
       throw createError("Tu verificación de identidad sigue en revisión", 401);
@@ -114,7 +120,7 @@ const checkKYCBusiness = {
     if (decodified.id !== id) {
       throw createError("No tienes privilegios para hacer esto", 401);
     }
-    const data = await db.query("SELECT * FROM bkyc WHERE id_user = ?", id);
+    const data = await db.query("SELECT * FROM bkyc WHERE id_user = ?", [id]);
     const kyc = data[0];
     if (kyc.approve !== true) {
       throw createError("Tu verificación de identidad sigue en revisión", 401);
@@ -171,3 +177,5 @@ export default {
   checkKYCBusiness,
   checkOwner,
 };
+
+export { isUserInTable, verifyOwnership };
