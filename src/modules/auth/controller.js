@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import auth from "../../auth/index.js";
+
 const TABLE = "auth";
+const SALT_ROUNDS = 10;
 export default function (inyectedDB) {
   let db = inyectedDB;
 
@@ -54,11 +56,17 @@ export default function (inyectedDB) {
     }
 
     if (data.password) {
-      authData.password = await bcrypt.hash(data.password.toString(), 5);
+      authData.password = await bcrypt.hash(
+        data.password.toString(),
+        SALT_ROUNDS
+      );
     }
 
     if (data.created_at) {
-      authData.created_at = await bcrypt.hash(data.created_at.toString(), 5);
+      authData.created_at = await bcrypt.hash(
+        data.created_at.toString(),
+        SALT_ROUNDS
+      );
     }
     return db.create(TABLE, authData);
   }
@@ -81,7 +89,10 @@ export default function (inyectedDB) {
     }
 
     if (data.password) {
-      authData.password = await bcrypt.hash(data.password.toString(), 5);
+      authData.password = await bcrypt.hash(
+        data.password.toString(),
+        SALT_ROUNDS
+      );
     }
     return db.update(TABLE, authData, id);
   }
