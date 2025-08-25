@@ -14,9 +14,22 @@ export default function (inyectedDB) {
     return db.one(TABLE, id);
   }
 
-  function eliminate(body) {
-    db.eliminate(TABLE, body);
-    return auth.eliminate(body);
+  async function eliminate(body) {
+    const result = { db: null, auth: null };
+
+    try {
+      result.db = await db.eliminate(TABLE, body);
+    } catch (error) {
+      result.db = { error: error.message || error };
+    }
+
+    try {
+      result.auth = await auth.eliminate(body);
+    } catch (error) {
+      result.auth = { error: error.message || error };
+    }
+
+    return result;
   }
 
   async function create(body) {
