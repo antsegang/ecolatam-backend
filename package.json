@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
+<<<<<<< ours
     "test": "mocha \"tests/**/*.test.js\""
+=======
+    "lint": "eslint .",
+    "format": "prettier . --write"
+>>>>>>> theirs
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +27,11 @@
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
+<<<<<<< ours
     "mocha": "^10.4.0"
+=======
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5"
+>>>>>>> theirs
   }
 }
