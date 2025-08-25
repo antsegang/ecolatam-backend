@@ -1,14 +1,11 @@
+import mysql from "../../DB/mysql.js";
 import bcrypt from "bcrypt";
 import auth from "../../auth/index.js";
 
 const TABLE = "auth";
 const SALT_ROUNDS = 10;
 export default function (inyectedDB) {
-  let db = inyectedDB;
-
-  if (!db) {
-    db = require("../../DB/mysql.js");
-  }
+  let db = inyectedDB || mysql;
 
   async function login(username, password) {
     try {

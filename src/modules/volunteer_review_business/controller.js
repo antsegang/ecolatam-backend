@@ -1,11 +1,8 @@
+import mysql from "../../DB/mysql.js";
 const TABLE = "volunteer_review_business";
 
 export default function (inyectedDB) {
-  let db = inyectedDB;
-
-  if (!db) {
-    db = require("../../DB/mysql.js");
-  }
+  let db = inyectedDB || mysql;
 
   function all() {
     return db.all(TABLE);
