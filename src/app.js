@@ -37,6 +37,8 @@ import clients from "./modules/clients/routes.js";
 
 import { errors } from "./net/errors.js";
 
+const api_base = "/api/v1/"
+
 export const app = express();
 
 //Middlewares
@@ -50,34 +52,34 @@ app.use(cookieParser());
 app.set("port", config.app.port);
 
 //Rutas
-app.use("/api/admin", admin);
-app.use("/api/auth", auth);
-app.use("/api/bcategory", bcategory);
-app.use("/api/bkyc", bkyc);
-app.use("/api/business", business);
-app.use("/api/business_review", business_review);
-app.use("/api/business_review_volunteer", business_review_volunteer);
-app.use("/api/canton", canton);
-app.use("/api/csagent", csagent);
-app.use("/api/csagent_review", csagent_review);
-app.use("/api/distrito", distrito);
-app.use("/api/idtype", idtype);
-app.use("/api/inspector", inspector);
-app.use("/api/pais", pais);
-app.use("/api/product", product);
-app.use("/api/product_review", product_review);
-app.use("/api/provincia", provincia);
-app.use("/api/regel", regel);
-app.use("/api/service", service);
-app.use("/api/service_review", service_review);
-app.use("/api/superadmin", superadmin);
-app.use("/api/tour_guide", tour_guide);
-app.use("/api/tour_guide_review", tour_guide_review);
-app.use("/api/ukyc", ukyc);
-app.use("/api/users", users);
-app.use("/api/vip", vip);
-app.use("/api/volunteer", volunteer);
-app.use("/api/volunteer_review_business", volunteer_review_business);
-app.use("/api/clients", clients);
+app.use(api_base+"admin", admin);
+app.use(api_base+"auth", auth);
+app.use(api_base+"bcategory", bcategory);
+app.use(api_base+"bkyc", bkyc);
+app.use(api_base+"business", business);
+app.use(api_base+"business_review", business_review);
+app.use(api_base+"business_review_volunteer", business_review_volunteer);
+app.use(api_base+"canton", canton);
+app.use(api_base+"csagent", csagent);
+app.use(api_base+"csagent_review", csagent_review);
+app.use(api_base+"distrito", distrito);
+app.use(api_base+"idtype", idtype);
+app.use(api_base+"inspector", inspector);
+app.use(api_base+"pais", pais);
+app.use(api_base+"product", product);
+app.use(api_base+"product_review", product_review);
+app.use(api_base+"provincia", provincia);
+app.use(api_base+"regel", regel);
+app.use(api_base+"service", service);
+app.use(api_base+"service_review", service_review);
+app.use(api_base+"superadmin", superadmin);
+app.use(api_base+"tour_guide", tour_guide);
+app.use(api_base+"tour_guide_review", tour_guide_review);
+app.use(api_base+"ukyc", ukyc);
+app.use(api_base+"users", users);
+app.use(api_base+"vip", vip);
+app.use(api_base+"volunteer", volunteer);
+app.use(api_base+"volunteer_review_business", volunteer_review_business);
+app.use(api_base+"clients", clients);
 
 app.use(errors);
