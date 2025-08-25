@@ -11,6 +11,45 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
+const allowedTables = new Set([
+  "admin",
+  "auth",
+  "bcategory",
+  "bkyc",
+  "business",
+  "business_review",
+  "business_review_volunteer",
+  "canton",
+  "clients",
+  "csagent",
+  "csagent_review",
+  "distrito",
+  "idtype",
+  "inspector",
+  "pais",
+  "product",
+  "product_review",
+  "provincia",
+  "regel",
+  "service",
+  "service_review",
+  "superadmin",
+  "tour_guide",
+  "tour_guide_review",
+  "ukyc",
+  "users",
+  "vip",
+  "volunteer",
+  "volunteer_review_business",
+]);
+
+function validateTable(table) {
+  if (!allowedTables.has(table)) {
+    throw new Error("Invalid table name");
+  }
+  return table;
+}
+
 function pquery(query, consult) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
@@ -32,26 +71,29 @@ function pquery(query, consult) {
 }
 
 function all(table) {
+  validateTable(table);
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT * FROM ${table}`, (error, result) => {
+    pool.query("SELECT * FROM ??", [table], (error, result) => {
       return error ? reject(error) : resolve(result);
     });
   });
 }
 
 function one(table, id) {
+  validateTable(table);
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT * FROM ${table} WHERE id =${id}`, (error, result) => {
+    pool.query("SELECT * FROM ?? WHERE id = ?", [table, id], (error, result) => {
       return error ? reject(error) : resolve(result);
     });
   });
 }
 
 function update(table, data, id) {
+  validateTable(table);
   return new Promise((resolve, reject) => {
     pool.query(
-      `UPDATE ${table} empleados SET ? WHERE id = ?`,
-      [data, id],
+      "UPDATE ?? SET ? WHERE id = ?",
+      [table, data, id],
       (error, result) => {
         return error ? reject(error) : resolve(result);
       }
@@ -60,18 +102,20 @@ function update(table, data, id) {
 }
 
 function create(table, data) {
+  validateTable(table);
   return new Promise((resolve, reject) => {
-    pool.query(`INSERT INTO ${table} SET ?`, data, (error, result) => {
+    pool.query("INSERT INTO ?? SET ?", [table, data], (error, result) => {
       return error ? reject(error) : resolve(result);
     });
   });
 }
 
 function eliminate(table, data) {
+  validateTable(table);
   return new Promise((resolve, reject) => {
     pool.query(
-      `DELETE FROM ${table} WHERE id = ?`,
-      data.id,
+      "DELETE FROM ?? WHERE id = ?",
+      [table, data.id],
       (error, result) => {
         return error ? reject(error) : resolve(result);
       }
