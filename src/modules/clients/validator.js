@@ -1,12 +1,14 @@
+import Joi from 'joi';
+
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const createClientSchema = {
-  name: { required: true, type: 'string' },
-  email: { required: true, type: 'string', pattern: emailPattern }
-};
+export const createClientSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().pattern(emailPattern).required()
+});
 
-export const updateClientSchema = {
-  id: { required: true, type: 'number' },
-  name: { type: 'string' },
-  email: { type: 'string', pattern: emailPattern }
-};
+export const updateClientSchema = Joi.object({
+  id: Joi.number().required(),
+  name: Joi.string(),
+  email: Joi.string().pattern(emailPattern)
+});

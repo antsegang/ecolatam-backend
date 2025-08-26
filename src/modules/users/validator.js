@@ -1,12 +1,14 @@
-export const createUserSchema = {
-  username: { required: true, type: 'string' },
-  password: { required: true, type: 'string', minLength: 6 },
-  role: { required: true, type: 'string' }
-};
+import Joi from 'joi';
 
-export const updateUserSchema = {
-  id: { required: true, type: 'number' },
-  username: { type: 'string' },
-  password: { type: 'string', minLength: 6 },
-  role: { type: 'string' }
-};
+export const createUserSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().min(6).required(),
+  role: Joi.string().required()
+});
+
+export const updateUserSchema = Joi.object({
+  id: Joi.number().required(),
+  username: Joi.string(),
+  password: Joi.string().min(6),
+  role: Joi.string()
+});
