@@ -1,6 +1,7 @@
 import mysql from "../../DB/mysql.js";
 import bcrypt from "bcrypt";
 import auth from "../../auth/index.js";
+import dbQuery from "../../utils/dbQuery.js";
 
 const TABLE = "auth";
 const SALT_ROUNDS = 10;
@@ -10,7 +11,7 @@ export default function (inyectedDB) {
   async function login(username, password) {
     try {
       const query = `SELECT * FROM ${TABLE} WHERE ?`;
-      const data = await db.query(query, { username: username });
+      const data = await dbQuery(db, query, { username });
 
       if (!data[0] || !data[0].password) {
         throw new Error("Usuario no encontrado");

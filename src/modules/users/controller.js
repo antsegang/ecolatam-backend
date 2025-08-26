@@ -3,23 +3,31 @@ import logger from "../../utils/logger.js";
 const TABLE = "users";
 import auth from "../auth/index.js";
 import { formatDate } from "../../utils/date.js";
+import dbQuery from "../../utils/dbQuery.js";
 
 export default function (inyectedDB) {
   let db = inyectedDB || mysql;
 
   function all(limit = 10, offset = 0) {
-    return db.all(TABLE, { limit, offset });
+    return dbQuery(db, "SELECT * FROM ?? LIMIT ? OFFSET ?", [
+      TABLE,
+      limit,
+      offset,
+    ]);
   }
 
   function one(id) {
-    return db.one(TABLE, id);
+    return dbQuery(db, "SELECT * FROM ?? WHERE id = ?", [TABLE, id]);
   }
 
   async function eliminate(body) {
     const result = { db: null, auth: null };
 
     try {
-      result.db = await db.eliminate(TABLE, body);
+      result.db = await dbQuery(db, "DELETE FROM ?? WHERE id = ?", [
+        TABLE,
+        body.id,
+      ]);
     } catch (error) {
       result.db = { error: error.message || error };
     }
@@ -51,7 +59,7 @@ export default function (inyectedDB) {
       created_at: date,
     };
 
-    const response = await db.create(TABLE, user);
+    const response = await dbQuery(db, "INSERT INTO ?? SET ?", [TABLE, user]);
     logger.debug(response);
 
     var insertId = 0;
@@ -94,7 +102,11 @@ export default function (inyectedDB) {
 
     const id = body.id;
 
-    const response = await db.update(TABLE, user, id);
+    const response = await dbQuery(db, "UPDATE ?? SET ? WHERE id = ?", [
+      TABLE,
+      user,
+      id,
+    ]);
     logger.debug(response);
 
     var insertId = 0;

@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../config.js";
 import { error as createError } from "../middlewares/errors.js";
 import db from "./../DB/mysql.js";
+import dbQuery from "../utils/dbQuery.js";
 
 const secret = config.jwt.secret;
 const expiresIn = config.jwt.expiresIn;
@@ -15,7 +16,8 @@ function verifyToken(token) {
 }
 
 async function isUserInTable(userId, table) {
-  const data = await db.query(
+  const data = await dbQuery(
+    db,
     "SELECT 1 FROM ?? WHERE id_user = ? LIMIT 1",
     [table, userId]
   );
@@ -24,7 +26,8 @@ async function isUserInTable(userId, table) {
 
 async function verifyOwnership(req, id, table) {
   const { id: userId } = decodifyHeader(req);
-  const data = await db.query(
+  const data = await dbQuery(
+    db,
     "SELECT id_user FROM ?? WHERE id = ? LIMIT 1",
     [table, id]
   );
@@ -102,7 +105,7 @@ const checkKYCUser = {
     if (decodified.id !== id) {
       throw createError("No tienes privilegios para hacer esto", 401);
     }
-    const data = await db.query("SELECT * FROM ukyc WHERE id_user = ?", [id]);
+    const data = await dbQuery(db, "SELECT * FROM ukyc WHERE id_user = ?", [id]);
     const kyc = data[0];
     if (kyc.approve !== 1) {
       throw createError("Tu verificación de identidad sigue en revisión", 401);
@@ -120,7 +123,7 @@ const checkKYCBusiness = {
     if (decodified.id !== id) {
       throw createError("No tienes privilegios para hacer esto", 401);
     }
-    const data = await db.query("SELECT * FROM bkyc WHERE id_user = ?", [id]);
+    const data = await dbQuery(db, "SELECT * FROM bkyc WHERE id_user = ?", [id]);
     const kyc = data[0];
     if (kyc.approve !== true) {
       throw createError("Tu verificación de identidad sigue en revisión", 401);
