@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "mocha \"tests/**/*.test.js\"",
-    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint .",
+    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint .",
     "format": "prettier . --write"
   },
   "author": "",
@@ -28,9 +28,10 @@
     "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
-    "mocha": "^10.4.0",
+    "cross-env": "^10.0.0",
     "eslint": "^8.56.0",
-    "prettier": "^3.2.5",
-    "nodemon": "^3.0.2"
+    "mocha": "^10.4.0",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.2.5"
   }
 }

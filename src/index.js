@@ -12,5 +12,5 @@ process.on("unhandledRejection", (reason) => {
 });
 
 app.listen(app.get("port"), () => {
-  logger.info("Servidor escuchando en el puerto...", app.get("port"));
+  logger.info("Servidor escuchando en el puerto..." + app.get("port"));
 });
