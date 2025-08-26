@@ -10,6 +10,7 @@ import { config } from "./config.js";
 
 import loadRoutes from "./utils/routeLoader.js";
 
+import { error } from "./net/responses.js";
 import { errors } from "./net/errors.js";
 
 const api_base = "/api/v1/"
@@ -45,5 +46,10 @@ app.set("port", config.app.port);
 
 //Rutas
 await loadRoutes(app, api_base);
+
+app.use((req, res) => {
+  logger.warn(`Route not found: ${req.method} ${req.originalUrl}`);
+  error(req, res, "Not Found", 404);
+});
 
 app.use(errors);
