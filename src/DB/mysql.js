@@ -60,7 +60,7 @@ async function update(table, data, id) {
 }
 
 async function create(table, data) {
-  validateTable(table);
+  await validateTable(table);
   const [rows] = await pool.query("INSERT INTO ?? SET ?", [table, data]);
   return rows;
 }
