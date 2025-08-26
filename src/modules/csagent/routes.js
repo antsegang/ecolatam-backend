@@ -24,13 +24,13 @@ async function one(req, res) {
 }
 
 async function eliminate(req, res) {
-    const items = await controller.eliminate(req.body);
+    await controller.eliminate(req.body);
     success(req, res, "Item eliminado satisfactoriamente", 200);
 }
 
 async function create(req, res) {
   let message = "";
-    const items = await controller.create(req.body);
+    await controller.create(req.body);
     message = "Item guardado con éxito";
     success(req, res, message, 201);
 }

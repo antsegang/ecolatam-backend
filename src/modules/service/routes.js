@@ -25,20 +25,20 @@ async function one(req, res) {
 }
 
 async function decline(req, res) {
-    const items = await controller.decline(req.body);
+    await controller.decline(req.body);
     success(req, res, "Item eliminado satisfactoriamente", 200);
 }
 
 async function request(req, res) {
   let message = "";
-    const items = await controller.request(req.body);
+    await controller.request(req.body);
     message = "Item guardado con éxito";
     success(req, res, message, 201);
 }
 
 async function approve(req, res) {
   let message = "";
-    const items = await controller.approve(req.body);
+    await controller.approve(req.body);
     message = "Item actualizado con éxito";
     success(req, res, message, 201);
 }

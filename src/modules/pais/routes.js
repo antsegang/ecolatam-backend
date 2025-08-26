@@ -20,18 +20,18 @@ async function all(req, res) {
 }
 
 async function one(req, res) {
-    const items = await controller.one(req.params.id);
+    await controller.one(req.params.id);
     success(req, res, items, 200);
 }
 
 async function eliminate(req, res) {
-    const items = await controller.eliminate(req.body);
+    await controller.eliminate(req.body);
     success(req, res, "Item eliminado satisfactoriamente", 200);
 }
 
 async function create(req, res) {
   let message = "";
-    const items = await controller.create(req.body);
+    await controller.create(req.body);
     message = "Item guardado con éxito";
     success(req, res, message, 201);
 }
