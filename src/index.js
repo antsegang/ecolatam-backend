@@ -1,5 +1,6 @@
 import { app } from "./app.js";
+import logger from "./utils/logger.js";
 
 app.listen(app.get("port"), () => {
-  console.log("Servidor ecuchando en el puerto ", app.get("port"));
+  logger.info("Servidor ecuchando en el puerto", app.get("port"));
 });
