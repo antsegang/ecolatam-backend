@@ -19,6 +19,9 @@ PORT=3000                    # opcional, por defecto 3000
 NODE_ENV=development         # obligatorio
 JWT_SECRET=<secreto_jwt>     # obligatorio
 JWT_EXPIRES_IN=1h            # opcional
+JWT_ALGORITHM=HS256          # opcional, algoritmo de firma
+JWT_AUDIENCE=<audiencia_jwt> # opcional
+JWT_ISSUER=<emisor_jwt>      # opcional
 MYSQL_HOST=<host_mysql>      # obligatorio
 MYSQL_USER=<usuario_mysql>   # obligatorio
 MYSQL_PASSWORD=<password_mysql> # requerido en producción
@@ -29,7 +32,7 @@ LOG_EXTERNAL_URL=<url_logs>  # obligatorio
 ALLOWED_TABLES=<tabla1,tabla2> # opcional
 ```
 
-Las variables marcadas como **obligatorias** deben definirse; de lo contrario la aplicación no iniciará. `JWT_EXPIRES_IN` acepta cualquier valor soportado por `jsonwebtoken` y expira en `1h` si no se indica. `MYSQL_PASSWORD` solo es obligatorio cuando `NODE_ENV` es `production`. `CORS_ORIGIN` acepta una lista separada por comas de orígenes permitidos. `ALLOWED_TABLES` permite restringir las tablas accesibles; si no se define, se cargan todas las tablas existentes.
+Las variables marcadas como **obligatorias** deben definirse; de lo contrario la aplicación no iniciará. `JWT_EXPIRES_IN` acepta cualquier valor soportado por `jsonwebtoken` y expira en `1h` si no se indica. `JWT_ALGORITHM` define el algoritmo de firma usado al emitir y validar tokens, y por defecto es `HS256`. Si se configuran `JWT_AUDIENCE` o `JWT_ISSUER`, los tokens incluirán y verificarán esos reclamos. `MYSQL_PASSWORD` solo es obligatorio cuando `NODE_ENV` es `production`. `CORS_ORIGIN` acepta una lista separada por comas de orígenes permitidos. `ALLOWED_TABLES` permite restringir las tablas accesibles; si no se define, se cargan todas las tablas existentes.
 
 ## Instalación y ejecución
 

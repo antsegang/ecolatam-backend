@@ -41,6 +41,9 @@ export const config = {
     secret: process.env.JWT_SECRET,
     // Token expiration time, defaults to 1 hour
     expiresIn: process.env.JWT_EXPIRES_IN || "1h",
+    algorithm: process.env.JWT_ALGORITHM || "HS256",
+    audience: process.env.JWT_AUDIENCE,
+    issuer: process.env.JWT_ISSUER,
   },
   mysql: {
     host: process.env.MYSQL_HOST,

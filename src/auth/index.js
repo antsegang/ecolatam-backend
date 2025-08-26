@@ -5,13 +5,22 @@ import db, { validateTable } from "./../DB/mysql.js";
 
 const secret = config.jwt.secret;
 const expiresIn = config.jwt.expiresIn;
+const algorithm = config.jwt.algorithm;
+const audience = config.jwt.audience;
+const issuer = config.jwt.issuer;
 
 function assignToken(data) {
-  return jwt.sign(data, secret, { expiresIn });
+  const options = { expiresIn, algorithm };
+  if (audience) options.audience = audience;
+  if (issuer) options.issuer = issuer;
+  return jwt.sign(data, secret, options);
 }
 
 function verifyToken(token) {
-  return jwt.verify(token, secret);
+  const options = { algorithms: [algorithm] };
+  if (audience) options.audience = audience;
+  if (issuer) options.issuer = issuer;
+  return jwt.verify(token, secret, options);
 }
 
 async function isUserInTable(userId, table) {
