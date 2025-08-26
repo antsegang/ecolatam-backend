@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import assert from 'assert';
 import asyncHandler from '../src/utils/asyncHandler.js';
 import { errors } from '../src/net/errors.js';
@@ -29,7 +30,7 @@ describe('asyncHandler', () => {
     assert.deepStrictEqual(res.body, {
       error: true,
       status: 500,
-      body: 'Error Interno',
+      body: 'Error interno del servidor',
     });
   });
 });
