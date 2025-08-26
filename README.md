@@ -47,6 +47,14 @@ Para proteger la aplicación se emplean middlewares de Express:
 - **Helmet** establece encabezados HTTP seguros.
 - **express-rate-limit** restringe a 100 solicitudes por IP cada 15 minutos.
 
+### Consultas a la base de datos
+
+La mayoría de las operaciones utilizan métodos parametrizados (`all`, `one`,
+`create`, etc.) que validan la tabla y emplean placeholders. Evita usar el
+método genérico `db.query`; si es necesario realizar una consulta manual,
+primero valida los datos de entrada y usa siempre `?` o `??` para todos los
+valores dinámicos.
+
 ## Uso del API
 
 ### Autenticación

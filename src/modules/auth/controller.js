@@ -1,7 +1,6 @@
-import mysql from "../../DB/mysql.js";
+import mysql, { validateTable } from "../../DB/mysql.js";
 import bcrypt from "bcrypt";
 import auth from "../../auth/index.js";
-import dbQuery from "../../utils/dbQuery.js";
 
 const TABLE = "auth";
 const SALT_ROUNDS = 10;
@@ -10,29 +9,34 @@ export default function (inyectedDB) {
 
   async function login(username, password) {
     try {
-      const query = `SELECT * FROM ${TABLE} WHERE ?`;
-      const data = await dbQuery(db, query, { username });
+      if (typeof username !== "string" || username.trim() === "") {
+        throw new Error("Usuario no válido");
+      }
+      validateTable(TABLE);
+      const data = await db.query(
+        "SELECT * FROM ?? WHERE username = ? LIMIT 1",
+        [TABLE, username]
+      );
 
       if (!data[0] || !data[0].password) {
         throw new Error("Usuario no encontrado");
       }
 
-      var hash = data[0].password;
+      const hash = data[0].password;
 
       const passwordMatch = await bcrypt.compare(password, hash);
       if (passwordMatch) {
-        var id = data[0].id;
-        var datos = data[0];
-        //Generar un token solo con campos necesarios
+        const id = data[0].id;
+        const datos = data[0];
+        // Generar un token solo con campos necesarios
         const token = auth.assignToken({
           id: data[0].id,
           username: data[0].username,
           role: data[0].role,
         });
         return { token, id, datos };
-      } else {
-        throw new Error("Información inválida");
       }
+      throw new Error("Información inválida");
     } catch (error) {
       throw new Error(error.message || "Error en la autenticación");
     }

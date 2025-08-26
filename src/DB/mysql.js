@@ -101,6 +101,10 @@ async function eliminate(table, data) {
   return rows;
 }
 
+// Ejecuta una consulta SQL manual. Prefiere las funciones parametrizadas
+// (all, one, create, update, eliminate) antes de usar este método. Si necesitas
+// `query`, valida los datos de entrada y utiliza placeholders `?` para todos
+// los valores dinámicos a fin de prevenir inyecciones SQL.
 async function query(sql, consult) {
   if (consult !== undefined) {
     const [rows] = await pool.query(sql, consult);
@@ -119,4 +123,4 @@ export default {
   query,
 };
 
-export { pool };
+export { pool, validateTable };

@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import { config } from "../config.js";
 import { error as createError } from "../middlewares/errors.js";
-import db from "./../DB/mysql.js";
-import dbQuery from "../utils/dbQuery.js";
+import db, { validateTable } from "./../DB/mysql.js";
 
 const secret = config.jwt.secret;
 const expiresIn = config.jwt.expiresIn;
@@ -16,20 +15,28 @@ function verifyToken(token) {
 }
 
 async function isUserInTable(userId, table) {
-  const data = await dbQuery(
-    db,
+  const id = Number(userId);
+  if (!Number.isInteger(id)) {
+    throw createError("ID de usuario inválido", 400);
+  }
+  validateTable(table);
+  const data = await db.query(
     "SELECT 1 FROM ?? WHERE id_user = ? LIMIT 1",
-    [table, userId]
+    [table, id]
   );
   return data.length > 0;
 }
 
 async function verifyOwnership(req, id, table) {
   const { id: userId } = decodifyHeader(req);
-  const data = await dbQuery(
-    db,
+  const resourceId = Number(id);
+  if (!Number.isInteger(resourceId)) {
+    throw createError("ID de recurso inválido", 400);
+  }
+  validateTable(table);
+  const data = await db.query(
     "SELECT id_user FROM ?? WHERE id = ? LIMIT 1",
-    [table, id]
+    [table, resourceId]
   );
   const ownerId = data[0]?.id_user;
   if (ownerId !== userId) {
@@ -105,7 +112,11 @@ const checkKYCUser = {
     if (decodified.id !== id) {
       throw createError("No tienes privilegios para hacer esto", 401);
     }
-    const data = await dbQuery(db, "SELECT * FROM ukyc WHERE id_user = ?", [id]);
+    const uid = Number(id);
+    if (!Number.isInteger(uid)) {
+      throw createError("ID inválido", 400);
+    }
+    const data = await db.query("SELECT * FROM ukyc WHERE id_user = ?", [uid]);
     const kyc = data[0];
     if (kyc.approve !== 1) {
       throw createError("Tu verificación de identidad sigue en revisión", 401);
@@ -123,7 +134,11 @@ const checkKYCBusiness = {
     if (decodified.id !== id) {
       throw createError("No tienes privilegios para hacer esto", 401);
     }
-    const data = await dbQuery(db, "SELECT * FROM bkyc WHERE id_user = ?", [id]);
+    const uid = Number(id);
+    if (!Number.isInteger(uid)) {
+      throw createError("ID inválido", 400);
+    }
+    const data = await db.query("SELECT * FROM bkyc WHERE id_user = ?", [uid]);
     const kyc = data[0];
     if (kyc.approve !== true) {
       throw createError("Tu verificación de identidad sigue en revisión", 401);
