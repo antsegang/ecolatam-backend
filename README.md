@@ -50,6 +50,18 @@ Authorization: Bearer <token>
 - `GET /api/businesses` – Lista los negocios registrados y verificados.
 Consulta el código fuente para más módulos y rutas disponibles.
 
+### Paginación
+Todos los endpoints que listan recursos aceptan parámetros de paginación opcionales `limit` y `offset`:
+
+```
+GET /api/users?limit=10&offset=20
+```
+
+- `limit` controla la cantidad máxima de elementos devueltos (por defecto `10`).
+- `offset` indica desde qué registro iniciar (por defecto `0`).
+
+Si no se envían estos parámetros, se aplican los valores por defecto. Esto permite navegar grandes colecciones de manera eficiente.
+
 ## Contribuir
 Las contribuciones son bienvenidas. Abre un issue o envía un pull request. Procura que cualquier cambio esté documentado y, cuando sea posible, probado. Cualquier uso del código requiere autorización del autor.
 

@@ -50,10 +50,26 @@ function validateTable(table) {
   return table;
 }
 
-async function all(table) {
+function all(table, { limit, offset } = {}) {
   validateTable(table);
-  const [rows] = await pool.query("SELECT * FROM ??", [table]);
-  return rows;
+  return new Promise((resolve, reject) => {
+    let query = "SELECT * FROM ??";
+    const params = [table];
+
+    if (typeof limit === "number") {
+      query += " LIMIT ?";
+      params.push(limit);
+
+      if (typeof offset === "number") {
+        query += " OFFSET ?";
+        params.push(offset);
+      }
+    }
+
+    pool.query(query, params, (error, result) => {
+      return error ? reject(error) : resolve(result);
+    });
+  });
 }
 
 async function one(table, id) {
