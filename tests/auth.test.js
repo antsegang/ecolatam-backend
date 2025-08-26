@@ -9,6 +9,7 @@ process.env.MYSQL_HOST = 'localhost';
 process.env.MYSQL_USER = 'user';
 process.env.MYSQL_PASSWORD = 'pass';
 process.env.MYSQL_DB = 'db';
+process.env.ALLOWED_TABLES = 'admin,superadmin,business,users,clients,ukyc,bkyc';
 
 const {
   default: auth,

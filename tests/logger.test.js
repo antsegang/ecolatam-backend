@@ -4,7 +4,7 @@ const prevLevel = process.env.LOG_LEVEL;
 const prevExternal = process.env.LOG_EXTERNAL_URL;
 process.env.LOG_LEVEL = 'debug';
 process.env.LOG_EXTERNAL_URL = 'http://example.com/log';
-const { default: logger } = await import('../src/utils/logger.js');
+const { default: logger } = await import(`../src/utils/logger.js?${Date.now()}`);
 
 describe('logger utility', () => {
   after(() => {

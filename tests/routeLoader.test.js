@@ -3,7 +3,11 @@ import express from 'express';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import module from 'module';
 import loadRoutes from '../src/utils/routeLoader.js';
+
+process.env.NODE_PATH = path.join(process.cwd(), 'node_modules');
+module.Module._initPaths();
 
 describe('routeLoader', () => {
   let tmpDir;
