@@ -2,6 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 import { config } from "./config.js";
 
@@ -42,6 +44,14 @@ const api_base = "/api/v1/"
 export const app = express();
 
 //Middlewares
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+app.use(limiter);
+
 app.use(cors());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
