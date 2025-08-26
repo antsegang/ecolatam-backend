@@ -5,11 +5,18 @@ configDotenv();
 
 // Ensure required environment variables are present
 const requiredEnv = [
+  "NODE_ENV",
+  "CORS_ORIGIN",
   "JWT_SECRET",
   "MYSQL_HOST",
   "MYSQL_USER",
   "MYSQL_DB",
+  "LOG_LEVEL",
+  "LOG_EXTERNAL_URL",
 ];
+if (process.env.NODE_ENV == "production") {
+  requiredEnv.push("MYSQL_PASSWORD");
+}
 requiredEnv.forEach((name) => {
   if (!process.env[name]) {
     throw new Error(`Environment variable ${name} is required`);
