@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import logger from "./utils/logger.js";
 
 import { config } from "./config.js";
 
@@ -53,6 +54,13 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(cors());
+app.use(
+  morgan("combined", {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  })
+);
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
