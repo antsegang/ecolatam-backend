@@ -3,10 +3,12 @@ import express from "express";
 import { success } from "../../net/responses.js";
 import controller from "./index.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+import { validate } from "../../middlewares/validation.js";
+import { loginSchema } from "./validator.js";
 
 const router = express.Router();
 
-router.post("/login", asyncHandler(login)); // Cambiado a router.post
+router.post("/login", validate(loginSchema), asyncHandler(login)); // Cambiado a router.post
 
 async function login(req, res) {
     const data = req.body;
