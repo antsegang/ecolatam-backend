@@ -1,6 +1,7 @@
 import mysql from "mysql2";
 import { config } from "../config.js";
 import { error } from "../middlewares/errors.js";
+import { loadAllowedTables } from "../config/allowedTables.js";
 
 const dbConfig = {
   host: config.mysql.host,
@@ -12,39 +13,8 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig).promise();
 
-const allowedTables = new Set([
-  "admin",
-  "auth",
-  "bcategory",
-  "bkyc",
-  "business",
-  "business_review",
-  "business_review_volunteer",
-  "canton",
-  "clients",
-  "csagent",
-  "csagent_review",
-  "distrito",
-  "idtype",
-  "inspector",
-  "pais",
-  "product",
-  "product_review",
-  "provincia",
-  "regel",
-  "service",
-  "service_review",
-  "superadmin",
-  "tour_guide",
-  "tour_guide_review",
-  "ukyc",
-  "users",
-  "vip",
-  "volunteer",
-  "volunteer_review_business",
-]);
-
-function validateTable(table) {
+async function validateTable(table) {
+  const allowedTables = await loadAllowedTables();
   if (!allowedTables.has(table)) {
     throw new Error("Invalid table name");
   }
@@ -52,7 +22,7 @@ function validateTable(table) {
 }
 
 async function all(table, { limit, offset } = {}) {
-  validateTable(table);
+  await validateTable(table);
   let query = "SELECT * FROM ??";
   const params = [table];
 
@@ -78,13 +48,13 @@ async function all(table, { limit, offset } = {}) {
 }
 
 async function one(table, id) {
-  validateTable(table);
+  await validateTable(table);
   const [rows] = await pool.query("SELECT * FROM ?? WHERE id = ?", [table, id]);
   return rows;
 }
 
 async function update(table, data, id) {
-  validateTable(table);
+  await validateTable(table);
   const [rows] = await pool.query("UPDATE ?? SET ? WHERE id = ?", [table, data, id]);
   return rows;
 }
@@ -96,7 +66,7 @@ async function create(table, data) {
 }
 
 async function eliminate(table, data) {
-  validateTable(table);
+  await validateTable(table);
   const [rows] = await pool.query("DELETE FROM ?? WHERE id = ?", [table, data.id]);
   return rows;
 }

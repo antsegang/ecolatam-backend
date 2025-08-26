@@ -12,7 +12,7 @@ export default function (inyectedDB) {
       if (typeof username !== "string" || username.trim() === "") {
         throw new Error("Usuario no válido");
       }
-      validateTable(TABLE);
+      await validateTable(TABLE);
       const data = await db.query(
         "SELECT * FROM ?? WHERE username = ? LIMIT 1",
         [TABLE, username]

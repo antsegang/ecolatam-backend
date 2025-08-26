@@ -19,7 +19,7 @@ async function isUserInTable(userId, table) {
   if (!Number.isInteger(id)) {
     throw createError("ID de usuario inválido", 400);
   }
-  validateTable(table);
+  await validateTable(table);
   const data = await db.query(
     "SELECT 1 FROM ?? WHERE id_user = ? LIMIT 1",
     [table, id]
@@ -33,7 +33,7 @@ async function verifyOwnership(req, id, table) {
   if (!Number.isInteger(resourceId)) {
     throw createError("ID de recurso inválido", 400);
   }
-  validateTable(table);
+  await validateTable(table);
   const data = await db.query(
     "SELECT id_user FROM ?? WHERE id = ? LIMIT 1",
     [table, resourceId]
