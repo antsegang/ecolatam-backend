@@ -1,5 +1,6 @@
 import mysql from "mysql2";
 import { config } from "../config.js";
+import { error } from "../middlewares/errors.js";
 
 const dbConfig = {
   host: config.mysql.host,
@@ -50,26 +51,30 @@ function validateTable(table) {
   return table;
 }
 
-function all(table, { limit, offset } = {}) {
+async function all(table, { limit, offset } = {}) {
   validateTable(table);
-  return new Promise((resolve, reject) => {
-    let query = "SELECT * FROM ??";
-    const params = [table];
+  let query = "SELECT * FROM ??";
+  const params = [table];
 
-    if (typeof limit === "number") {
-      query += " LIMIT ?";
-      params.push(limit);
+  if (limit !== undefined || offset !== undefined) {
+    const limitNumber = Number(limit);
+    const offsetNumber = Number(offset);
 
-      if (typeof offset === "number") {
-        query += " OFFSET ?";
-        params.push(offset);
-      }
+    if (
+      !Number.isFinite(limitNumber) ||
+      !Number.isFinite(offsetNumber) ||
+      limitNumber <= 0 ||
+      offsetNumber < 0
+    ) {
+      throw error("Parámetros de paginación inválidos", 400);
     }
 
-    pool.query(query, params, (error, result) => {
-      return error ? reject(error) : resolve(result);
-    });
-  });
+    query += " LIMIT ? OFFSET ?";
+    params.push(limitNumber, offsetNumber);
+  }
+
+  const [rows] = await pool.query(query, params);
+  return rows;
 }
 
 async function one(table, id) {
