@@ -44,6 +44,12 @@ async function verifyOwnership(req, id, table) {
   }
 }
 
+function createOwnershipChecker(tableName) {
+  return async function (req, id) {
+    await verifyOwnership(req, id, tableName);
+  };
+}
+
 const checkAuth = {
   confirmToken: function (req, id) {
     const decodified = decodifyHeader(req);
@@ -75,9 +81,7 @@ const checkAdmin = {
 };
 
 const checkCSAgent = {
-  confirmToken: async function (req, id) {
-    await verifyOwnership(req, id, "csagent");
-  },
+  confirmToken: createOwnershipChecker("csagent"),
 };
 
 const checkSAdmin = {
@@ -91,15 +95,11 @@ const checkSAdmin = {
 };
 
 const checkOwner = {
-  confirmToken: async function (req, id) {
-    await verifyOwnership(req, id, "business");
-  },
+  confirmToken: createOwnershipChecker("business"),
 };
 
 const checkVolunteer = {
-  confirmToken: async function (req, id) {
-    await verifyOwnership(req, id, "volunteer");
-  },
+  confirmToken: createOwnershipChecker("volunteer"),
 };
 
 const checkKYCUser = {
@@ -147,15 +147,11 @@ const checkKYCBusiness = {
 };
 
 const checkInspector = {
-  confirmToken: async function (req, id) {
-    await verifyOwnership(req, id, "inspector");
-  },
+  confirmToken: createOwnershipChecker("inspector"),
 };
 
 const checkTGuide = {
-  confirmToken: async function (req, id) {
-    await verifyOwnership(req, id, "tour_guide");
-  },
+  confirmToken: createOwnershipChecker("tour_guide"),
 };
 
 function getToken(authorization) {
@@ -196,4 +192,4 @@ export default {
   checkOwner,
 };
 
-export { isUserInTable, verifyOwnership };
+export { isUserInTable, verifyOwnership, createOwnershipChecker };
