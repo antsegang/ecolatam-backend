@@ -1,8 +1,8 @@
-import mysql from "../../DB/mysql.js";
-import logger from "../../utils/logger.js";
-const TABLE = "users";
-import auth from "../auth/index.js";
-import { formatDate } from "../../utils/date.js";
+import mysql from '../../DB/mysql.js';
+import logger from '../../utils/logger.js';
+const TABLE = 'users';
+import auth from '../auth/index.js';
+import { formatDate } from '../../utils/date.js';
 
 export default function (inyectedDB) {
   let db = inyectedDB || mysql;
@@ -54,14 +54,14 @@ export default function (inyectedDB) {
     const response = await db.create(TABLE, user);
     logger.debug(response);
 
-    var insertId = 0;
+    let insertId = 0;
     if (body.id === 0) {
       insertId = response.insertId;
     } else {
       insertId = body.id;
     }
 
-    var response2 = "";
+    let response2 = '';
     if (body.username || body.password || body.email || body.created_at) {
       response2 = await auth.create({
         id: insertId,
@@ -97,14 +97,14 @@ export default function (inyectedDB) {
     const response = await db.update(TABLE, user, id);
     logger.debug(response);
 
-    var insertId = 0;
+    let insertId = 0;
     if (body.id === 0) {
       insertId = response.insertId;
     } else {
       insertId = body.id;
     }
 
-    var response2 = "";
+    let response2 = '';
     if (body.username || body.password || body.email) {
       response2 = await auth.update(
         {
@@ -113,7 +113,7 @@ export default function (inyectedDB) {
           email: body.email,
           edited_at: date,
         },
-        insertId
+        insertId,
       );
     }
 
