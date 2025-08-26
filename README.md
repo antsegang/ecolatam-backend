@@ -11,15 +11,15 @@ Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
 ```
 PORT=<puerto_servidor>
-JWT_SECRET=<secreto_jwt>
+JWT_SECRET=<secreto_jwt> # obligatorio
 JWT_EXPIRES_IN=<duracion_jwt> # opcional, por defecto "1h"
 MYSQL_HOST=<host_mysql>
-MYSQL_USER=<usuario_mysql>
-MYSQL_PASSWORD=<password_mysql>
-MYSQL_DB=<base_de_datos_mysql>
+MYSQL_USER=<usuario_mysql> # obligatorio
+MYSQL_PASSWORD=<password_mysql> # obligatorio
+MYSQL_DB=<base_de_datos_mysql> # obligatorio
 ```
 
-Estas variables definen el puerto del servidor, el secreto y la duración del token JWT, así como la configuración de la conexión a MySQL. `JWT_EXPIRES_IN` acepta cualquier valor soportado por `jsonwebtoken` y, si no se especifica, expira en `1h`.
+Las variables marcadas como **obligatorias** deben definirse; de lo contrario la aplicación lanzará un error al iniciar. `JWT_EXPIRES_IN` acepta cualquier valor soportado por `jsonwebtoken` y, si no se especifica, expira en `1h`.
 
 ## Instalación y ejecución
 1. Instala las dependencias:

@@ -3,22 +3,28 @@ import { configDotenv } from "dotenv";
 // Load environment variables from a .env file if present
 configDotenv();
 
+// Ensure required environment variables are present
+const requiredEnv = ["JWT_SECRET", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"];
+requiredEnv.forEach((name) => {
+  if (!process.env[name]) {
+    throw new Error(`Environment variable ${name} is required`);
+  }
+});
+
 export const config = {
   app: {
     // Default to port 3000 if not provided
     port: Number(process.env.PORT) || 3000,
   },
   jwt: {
-    // Use null to force the consumer to provide a proper secret
-    secret: process.env.JWT_SECRET || null,
+    secret: process.env.JWT_SECRET,
     // Token expiration time, defaults to 1 hour
     expiresIn: process.env.JWT_EXPIRES_IN || "1h",
   },
   mysql: {
-    host: process.env.MYSQL_HOST || "localhost",
-    user: process.env.MYSQL_USER || "root",
-    // No default password for security reasons
-    password: process.env.MYSQL_PASSWORD || null,
-    database: process.env.MYSQL_DB || null,
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DB,
   },
 };

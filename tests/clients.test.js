@@ -1,5 +1,12 @@
 import assert from 'assert';
-import controllerFactory from '../src/modules/clients/controller.js';
+
+process.env.JWT_SECRET = 'testsecret';
+process.env.MYSQL_HOST = 'localhost';
+process.env.MYSQL_USER = 'user';
+process.env.MYSQL_PASSWORD = 'pass';
+process.env.MYSQL_DB = 'db';
+
+const { default: controllerFactory } = await import('../src/modules/clients/controller.js');
 
 describe('Clients controller', () => {
   it('updates the correct record', async () => {
