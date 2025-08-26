@@ -1,6 +1,7 @@
 import mysql, { validateTable } from "../../DB/mysql.js";
 import bcrypt from "bcrypt";
 import auth from "../../auth/index.js";
+import { error as createError } from "../../middlewares/errors.js";
 
 const TABLE = "auth";
 const SALT_ROUNDS = 10;
@@ -10,7 +11,7 @@ export default function (inyectedDB) {
   async function login(username, password) {
     try {
       if (typeof username !== "string" || username.trim() === "") {
-        throw new Error("Usuario no válido");
+        throw createError("Usuario no válido", 400);
       }
       await validateTable(TABLE);
       const data = await db.query(
@@ -19,7 +20,7 @@ export default function (inyectedDB) {
       );
 
       if (!data[0] || !data[0].password) {
-        throw new Error("Usuario no encontrado");
+        throw createError("Usuario no encontrado", 401);
       }
 
       const hash = data[0].password;
@@ -36,9 +37,12 @@ export default function (inyectedDB) {
         });
         return { token, id, datos };
       }
-      throw new Error("Información inválida");
+      throw createError("Información inválida", 401);
     } catch (error) {
-      throw new Error(error.message || "Error en la autenticación");
+      throw createError(
+        error.message || "Error en la autenticación",
+        error.statusCode || 500
+      );
     }
   }
 

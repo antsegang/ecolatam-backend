@@ -30,7 +30,7 @@ describe('asyncHandler', () => {
     assert.deepStrictEqual(res.body, {
       error: true,
       status: 500,
-      body: 'Error interno del servidor',
+      body: 'Error Interno',
     });
   });
 });
