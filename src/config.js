@@ -16,10 +16,19 @@ requiredEnv.forEach((name) => {
   }
 });
 
+// Parse comma separated list of allowed CORS origins
+const corsOrigins = (process.env.CORS_ORIGIN || "https://ecolatam.com")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 export const config = {
   app: {
     // Default to port 3000 if not provided
     port: Number(process.env.PORT) || 3000,
+  },
+  cors: {
+    origins: corsOrigins,
   },
   jwt: {
     secret: process.env.JWT_SECRET,

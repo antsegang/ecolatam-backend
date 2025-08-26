@@ -20,9 +20,11 @@ MYSQL_HOST=<host_mysql> # obligatorio
 MYSQL_USER=<usuario_mysql> # obligatorio
 MYSQL_PASSWORD=<password_mysql> # obligatorio
 MYSQL_DB=<base_de_datos_mysql> # obligatorio
+CORS_ORIGIN=<origen1,origen2> # opcional, por defecto "https://ecolatam.com"
 ```
 
 Las variables marcadas como **obligatorias** deben definirse; de lo contrario la aplicación lanzará un error al iniciar. `JWT_EXPIRES_IN` acepta cualquier valor soportado por `jsonwebtoken` y, si no se especifica, expira en `1h`.
+CORS_ORIGIN permite una lista separada por comas de orígenes habilitados.
 
 ## Instalación y ejecución
 
