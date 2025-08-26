@@ -30,6 +30,10 @@ Estas variables definen el puerto del servidor, el secreto y la duración del to
    ```bash
    npm run dev
    ```
+3. Inicia el servidor en producción:
+   ```bash
+   npm start
+   ```
 El API se ejecutará en `http://localhost:<PORT>`.
 
 ## Uso del API
