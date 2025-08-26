@@ -4,7 +4,13 @@ import { configDotenv } from "dotenv";
 configDotenv();
 
 // Ensure required environment variables are present
-const requiredEnv = ["JWT_SECRET", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DB"];
+const requiredEnv = [
+  "JWT_SECRET",
+  "MYSQL_HOST",
+  "MYSQL_USER",
+  "MYSQL_PASSWORD",
+  "MYSQL_DB",
+];
 requiredEnv.forEach((name) => {
   if (!process.env[name]) {
     throw new Error(`Environment variable ${name} is required`);

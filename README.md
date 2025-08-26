@@ -16,7 +16,7 @@ Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 PORT=<puerto_servidor>
 JWT_SECRET=<secreto_jwt> # obligatorio
 JWT_EXPIRES_IN=<duracion_jwt> # opcional, por defecto "1h"
-MYSQL_HOST=<host_mysql>
+MYSQL_HOST=<host_mysql> # obligatorio
 MYSQL_USER=<usuario_mysql> # obligatorio
 MYSQL_PASSWORD=<password_mysql> # obligatorio
 MYSQL_DB=<base_de_datos_mysql> # obligatorio
