@@ -1,5 +1,4 @@
-import test from 'node:test';
-import assert from 'node:assert';
+import assert from 'assert';
 import { validate } from '../src/middlewares/validation.js';
 import { createUserSchema } from '../src/modules/users/validator.js';
 import { createClientSchema } from '../src/modules/clients/validator.js';
@@ -15,37 +14,41 @@ function runValidator(schema, body) {
   });
 }
 
-test('user validator accepts valid data', async () => {
-  await runValidator(createUserSchema, {
-    username: 'john',
-    password: 'secret12',
-    role: 'user'
+describe('user validator', () => {
+  it('accepts valid data', async () => {
+    await runValidator(createUserSchema, {
+      username: 'john',
+      password: 'secret12',
+      role: 'user',
+    });
+  });
+
+  it('rejects invalid data', async () => {
+    await assert.rejects(
+      runValidator(createUserSchema, {
+        username: '',
+        password: '123',
+        role: 'user',
+      }),
+      (err) => err.statusCode === 400,
+    );
   });
 });
 
-test('user validator rejects invalid data', async () => {
-  await assert.rejects(
-    runValidator(createUserSchema, {
-      username: '',
-      password: '123',
-      role: 'user'
-    }),
-    (err) => err.statusCode === 400
-  );
-});
-
-test('client validator accepts valid data', async () => {
-  await runValidator(createClientSchema, {
-    name: 'Acme',
-    email: 'acme@example.com'
+describe('client validator', () => {
+  it('accepts valid data', async () => {
+    await runValidator(createClientSchema, {
+      name: 'Acme',
+      email: 'acme@example.com',
+    });
   });
-});
 
-test('client validator rejects invalid data', async () => {
-  await assert.rejects(
-    runValidator(createClientSchema, {
-      name: 'Acme'
-    }),
-    (err) => err.statusCode === 400
-  );
+  it('rejects invalid data', async () => {
+    await assert.rejects(
+      runValidator(createClientSchema, {
+        name: 'Acme',
+      }),
+      (err) => err.statusCode === 400,
+    );
+  });
 });

@@ -12,7 +12,7 @@ router.get("/", asyncHandler(all));
 router.get("/:id", asyncHandler(one));
 router.post("/", validate(createUserSchema), asyncHandler(create));
 router.put("/", security(), validate(updateUserSchema), asyncHandler(update));
-router.delete("/", asyncHandler(eliminate));
+router.delete("/", security(), asyncHandler(eliminate));
 
 async function all(req, res) {
     const limit = Number(req.query.limit ?? 10);

@@ -33,7 +33,7 @@ export default function (inyectedDB) {
         throw new Error("Información inválida");
       }
     } catch (error) {
-      throw new Error(error || "Error en la autenticación");
+      throw new Error(error.message || "Error en la autenticación");
     }
   }
 
