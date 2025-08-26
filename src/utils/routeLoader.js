@@ -4,6 +4,7 @@ import path from 'path';
 import os from 'os';
 import { pathToFileURL } from 'url';
 import { createRequire } from 'module';
+import logger from './logger.js';
 
 const requireCjs = createRequire(import.meta.url);
 const TMP_ROOT = path.resolve(os.tmpdir());
@@ -134,7 +135,8 @@ export default async function loadRoutes(
           mod = requireCjsFile(routesPath);
         }
       }
-    } catch {
+    } catch (err) {
+      logger.error(`Error al cargar el módulo de rutas ${routesPath}`, err);
       continue; // ignora módulo roto
     }
 
