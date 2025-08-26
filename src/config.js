@@ -8,7 +8,6 @@ const requiredEnv = [
   "JWT_SECRET",
   "MYSQL_HOST",
   "MYSQL_USER",
-  "MYSQL_PASSWORD",
   "MYSQL_DB",
 ];
 requiredEnv.forEach((name) => {

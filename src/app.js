@@ -26,7 +26,11 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use(cors());
+app.use(cors(
+  process.env.NODE_ENV === "development"
+  ? {}
+  : { origin: 'https://ecolatam.com', optionsSuccessStatus: 200}
+));
 app.use(
   morgan("combined", {
     stream: {

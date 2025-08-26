@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 // Required environment variables for config
 process.env.PORT = '3000';
 process.env.JWT_SECRET = 'testsecret';
-process.env.JWT_EXPIRES_IN = '2h';
+process.env.JWT_EXPIRES_IN = '1h';
 process.env.MYSQL_HOST = 'localhost';
 process.env.MYSQL_USER = 'user';
 process.env.MYSQL_PASSWORD = 'pass';
