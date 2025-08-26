@@ -12,7 +12,9 @@ router.post("/", security(), asyncHandler(create));
 router.delete("/", asyncHandler(eliminate));
 
 async function all(req, res) {
-    const items = await controller.all();
+    const limit = Number(req.query.limit ?? 10);
+    const offset = Number(req.query.offset ?? 0);
+    const items = await controller.all(limit, offset);
     success(req, res, items, 200);
 }
 

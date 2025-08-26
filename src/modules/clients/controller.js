@@ -4,8 +4,8 @@ const TABLE = "clients";
 export default function (inyectedDB) {
   let db = inyectedDB || mysql;
 
-  function all() {
-    return db.all(TABLE);
+  function all(limit = 10, offset = 0) {
+    return db.all(TABLE, { limit, offset });
   }
 
   function one(id) {

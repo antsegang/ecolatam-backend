@@ -54,7 +54,7 @@ Consulta el código fuente para más módulos y rutas disponibles.
 Todos los endpoints que listan recursos aceptan parámetros de paginación opcionales `limit` y `offset`:
 
 ```
-GET /api/users?limit=10&offset=20
+GET /recurso?limit=10&offset=20
 ```
 
 - `limit` controla la cantidad máxima de elementos devueltos (por defecto `10`).
