@@ -2,50 +2,35 @@ import express from "express";
 import { success } from "../../net/responses.js";
 import controller from "./index.js";
 import security from "./security.js";
+import asyncHandler from "../../utils/asyncHandler.js";
 
 const router = express.Router();
 
-router.get("/", all);
-router.get("/:id", one);
-router.post("/", security(), create);
-router.delete("/", eliminate);
+router.get("/", asyncHandler(all));
+router.get("/:id", asyncHandler(one));
+router.post("/", security(), asyncHandler(create));
+router.delete("/", asyncHandler(eliminate));
 
-async function all(req, res, next) {
-  try {
+async function all(req, res) {
     const items = await controller.all();
     success(req, res, items, 200);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function one(req, res, next) {
-  try {
+async function one(req, res) {
     const items = await controller.one(req.params.id);
     success(req, res, items, 200);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function eliminate(req, res, next) {
-  try {
+async function eliminate(req, res) {
     const items = await controller.eliminate(req.body);
     success(req, res, "Item eliminado satisfactoriamente", 200);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function create(req, res, next) {
+async function create(req, res) {
   let message = "";
-  try {
     const items = await controller.create(req.body);
     message = "Item guardado con éxito";
     success(req, res, message, 201);
-  } catch (err) {
-    next(err);
-  }
 }
 
 export default router;

@@ -2,13 +2,13 @@ import express from "express";
 
 import { success } from "../../net/responses.js";
 import controller from "./index.js";
+import asyncHandler from "../../utils/asyncHandler.js";
 
 const router = express.Router();
 
-router.post("/login", login); // Cambiado a router.post
+router.post("/login", asyncHandler(login)); // Cambiado a router.post
 
-async function login(req, res, next) {
-  try {
+async function login(req, res) {
     const data = req.body;
     // Ahora puedes acceder a los datos del cuerpo como req.body.username
     const username = data.username;
@@ -22,9 +22,6 @@ async function login(req, res, next) {
       { token: response.token, data: response.datos, id: response.id },
       200
     );
-  } catch (err) {
-    next(err);
-  }
 }
 
 export default router;

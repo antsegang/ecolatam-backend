@@ -2,61 +2,42 @@ import express from "express";
 import { success } from "../../net/responses.js";
 import controller from "./index.js";
 import security from "./security.js";
+import asyncHandler from "../../utils/asyncHandler.js";
 
 const router = express.Router();
 
-router.get("/", all);
-router.get("/:id", one);
-router.post("/", security.checkOwner(), request);
-router.put("/", security.checkAdmin(), approve);
-router.delete("/", security.checkAdmin(), decline);
-async function all(req, res, next) {
-  try {
+router.get("/", asyncHandler(all));
+router.get("/:id", asyncHandler(one));
+router.post("/", security.checkOwner(), asyncHandler(request));
+router.put("/", security.checkAdmin(), asyncHandler(approve));
+router.delete("/", security.checkAdmin(), asyncHandler(decline));
+async function all(req, res) {
     const items = await controller.all();
     success(req, res, items, 200);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function one(req, res, next) {
-  try {
+async function one(req, res) {
     const items = await controller.one(req.params.id);
     success(req, res, items, 200);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function decline(req, res, next) {
-  try {
+async function decline(req, res) {
     const items = await controller.decline(req.body);
     success(req, res, "Item eliminado satisfactoriamente", 200);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function request(req, res, next) {
+async function request(req, res) {
   let message = "";
-  try {
     const items = await controller.request(req.body);
     message = "Item guardado con éxito";
     success(req, res, message, 201);
-  } catch (err) {
-    next(err);
-  }
 }
 
-async function approve(req, res, next) {
+async function approve(req, res) {
   let message = "";
-  try {
     const items = await controller.approve(req.body);
     message = "Item actualizado con éxito";
     success(req, res, message, 201);
-  } catch (err) {
-    next(err);
-  }
 }
 
 export default router;
