@@ -118,3 +118,5 @@ export default {
   eliminate,
   query,
 };
+
+export { pool };
