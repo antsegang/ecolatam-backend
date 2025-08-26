@@ -18,7 +18,7 @@ describe('asyncHandler', () => {
     };
 
     const handler = asyncHandler(async () => {
-      throw new Error('boom');
+      throw new Error('Error Interno');
     });
 
     await handler(req, res, (err) => {
