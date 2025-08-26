@@ -3,13 +3,15 @@ import { success } from "../../net/responses.js";
 import controller from "./index.js";
 import security from "./security.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+import { validate } from "../../middlewares/validation.js";
+import { createBusinessSchema, updateBusinessSchema } from "./validator.js";
 
 const router = express.Router();
 
 router.get("/", asyncHandler(all));
 router.get("/:id", asyncHandler(one));
-router.post("/", security.checkKYCUser(), asyncHandler(create));
-router.put("/", security.checkOwner(), asyncHandler(update));
+router.post("/", security.checkKYCUser(), validate(createBusinessSchema), asyncHandler(create));
+router.put("/", security.checkOwner(), validate(updateBusinessSchema), asyncHandler(update));
 router.delete("/", security.checkOwner(), asyncHandler(eliminate));
 
 async function all(req, res) {

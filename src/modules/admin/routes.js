@@ -3,12 +3,14 @@ import { success } from "../../net/responses.js";
 import controller from "./index.js";
 import security from "./security.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+import { validate } from "../../middlewares/validation.js";
+import { createAdminSchema } from "./validator.js";
 
 const router = express.Router();
 
 router.get("/", asyncHandler(all));
 router.get("/:id", asyncHandler(one));
-router.post("/", security(), asyncHandler(create));
+router.post("/", security(), validate(createAdminSchema), asyncHandler(create));
 router.delete("/", asyncHandler(eliminate));
 
 async function all(req, res) {
