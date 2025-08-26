@@ -3,12 +3,6 @@ import { config } from "../config.js";
 
 let cached;
 
-/**
- * Carga el set de tablas permitidas.
- * - Si existe ALLOWED_TABLES (CSV) en el entorno, usa eso.
- * - Si no, consulta el esquema y cachea el resultado.
- * @returns {Promise<Set<string>>}
- */
 export async function loadAllowedTables() {
   if (cached) return cached;
 
@@ -29,11 +23,8 @@ export async function loadAllowedTables() {
     database: config.mysql.database,
   });
 
-  try {
-    const [rows] = await connection.query("SHOW TABLES");
-    cached = new Set(rows.map((row) => Object.values(row)[0]));
-    return cached;
-  } finally {
-    await connection.end();
-  }
+  const [rows] = await connection.query("SHOW TABLES");
+  await connection.end();
+  cached = new Set(rows.map((row) => Object.values(row)[0]));
+  return cached;
 }

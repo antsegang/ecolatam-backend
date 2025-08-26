@@ -1,4 +1,5 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 
 import { success } from "../../net/responses.js";
 import controller from "./index.js";
@@ -8,7 +9,12 @@ import { loginSchema } from "./validator.js";
 
 const router = express.Router();
 
-router.post("/login", validate(loginSchema), asyncHandler(login)); // Cambiado a router.post
+const loginLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+});
+
+router.post("/login", loginLimiter, validate(loginSchema), asyncHandler(login)); // Cambiado a router.post
 
 async function login(req, res) {
     const data = req.body;
