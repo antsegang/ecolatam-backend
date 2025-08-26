@@ -13,7 +13,7 @@ import loadRoutes from "./utils/routeLoader.js";
 import { error } from "./net/responses.js";
 import { errors } from "./net/errors.js";
 
-const api_base = "/api/v1/"
+const api_base = "/api/v1/";
 
 export const app = express();
 
