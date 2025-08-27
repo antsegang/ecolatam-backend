@@ -5,7 +5,8 @@ export function errors(err, req, res) {
   logger.error(err.message, { stack: err.stack });
 
   const status = err.statusCode || 500;
-  const isDev = process.env.NODE_ENV === 'development';
+  const env = process.env.NODE_ENV || 'development';
+  const isDev = env === 'development';
   const message =
     isDev && err.message ? err.message : 'Error interno del servidor';
 
