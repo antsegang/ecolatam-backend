@@ -17,14 +17,18 @@ const api_base = "/api/v1/";
 
 export const app = express();
 
+app.set('trust proxy', 1);
+
 //Middlewares
 app.use(helmet());
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 60 * 1000,
+  max: 600,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
-app.use(limiter);
+app.use('/api/v1/auth/login', limiter);
 
 app.use(
   cors(
