@@ -19,18 +19,36 @@ function runValidator(schema, body) {
 describe('user validator', () => {
   it('accepts valid data', async () => {
     await runValidator(createUserSchema, {
+      name: 'John',
+      lastname: 'Doe',
+      birthdate: '1990-01-01',
+      location: 'Somewhere',
+      id_pais: 1,
+      id_provincia: 2,
+      id_canton: 3,
+      id_distrito: 4,
+      zip: '12345',
+      cellphone: '555-1234',
+      phone: '555-5678',
       username: 'john',
       password: 'secret12',
-      role: 'user',
+      email: 'john@example.com',
     });
   });
 
   it('rejects invalid data', async () => {
     await assert.rejects(
       runValidator(createUserSchema, {
-        username: '',
-        password: '123',
-        role: 'user',
+        name: 'John',
+        birthdate: '1990-01-01',
+        location: 'Somewhere',
+        id_pais: 1,
+        id_provincia: 2,
+        id_canton: 3,
+        id_distrito: 4,
+        zip: '12345',
+        cellphone: '555-1234',
+        phone: '555-5678',
       }),
       (err) => err.statusCode === 400,
     );
