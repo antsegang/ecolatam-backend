@@ -9,6 +9,7 @@ process.env.MYSQL_HOST = 'localhost';
 process.env.MYSQL_USER = 'user';
 process.env.MYSQL_PASSWORD = 'pass';
 process.env.MYSQL_DB = 'db';
+process.env.JWT_AUDIENCE = 'test-audience';
 
 const { default: router } = await import('../src/modules/users/routes.js');
 const { default: security } = await import('../src/modules/users/security.js');
@@ -28,6 +29,7 @@ describe('Users delete security middleware', () => {
   it('allows delete when token matches id', () => {
     const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
+      audience: process.env.JWT_AUDIENCE,
     });
     const req = {
       headers: { authorization: `Bearer ${token}` },
@@ -43,6 +45,7 @@ describe('Users delete security middleware', () => {
   it('throws error when token id mismatches', () => {
     const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
+      audience: process.env.JWT_AUDIENCE,
     });
     const req = {
       headers: { authorization: `Bearer ${token}` },

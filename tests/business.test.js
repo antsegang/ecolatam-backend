@@ -9,6 +9,7 @@ process.env.MYSQL_HOST = 'localhost';
 process.env.MYSQL_USER = 'user';
 process.env.MYSQL_PASSWORD = 'pass';
 process.env.MYSQL_DB = 'db';
+process.env.JWT_AUDIENCE = 'test-audience';
 
 const controller = (await import('../src/modules/business/index.js')).default;
 controller.all = async () => [{ id: 1, name: 'Biz' }];
@@ -60,6 +61,7 @@ describe('Business routes', () => {
   it('creates business with valid token', async () => {
     const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
+      audience: process.env.JWT_AUDIENCE,
     });
     const res = await fetch(`${base}/business`, {
       method: 'POST',
@@ -77,6 +79,7 @@ describe('Business routes', () => {
   it('rejects create with invalid token', async () => {
     const token = jwt.sign({ id: 2 }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
+      audience: process.env.JWT_AUDIENCE,
     });
     const res = await fetch(`${base}/business`, {
       method: 'POST',
@@ -92,6 +95,7 @@ describe('Business routes', () => {
   it('updates business with valid token', async () => {
     const token = jwt.sign({ id: 1 }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
+      audience: process.env.JWT_AUDIENCE,
     });
     const res = await fetch(`${base}/business`, {
       method: 'PUT',
@@ -109,6 +113,7 @@ describe('Business routes', () => {
   it('rejects update with invalid token', async () => {
     const token = jwt.sign({ id: 2 }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN,
+      audience: process.env.JWT_AUDIENCE,
     });
     const res = await fetch(`${base}/business`, {
       method: 'PUT',
