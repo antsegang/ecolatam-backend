@@ -54,7 +54,7 @@ app.use(cookieParser());
 app.set("port", config.app.port);
 
 //Rutas
-await loadRoutes(app, api_base);
+await loadRoutes(app, api_base, undefined, config.routes);
 
 app.use((req, res) => {
   logger.warn(`Route not found: ${req.method} ${req.originalUrl}`);

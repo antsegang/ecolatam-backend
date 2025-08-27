@@ -29,6 +29,15 @@ const corsOrigins = (process.env.CORS_ORIGIN || "https://ecolatam.com")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+const routesInclude = (process.env.ROUTES_INCLUDE || "")
+  .split(",")
+  .map((m) => m.trim())
+  .filter(Boolean);
+const routesExclude = (process.env.ROUTES_EXCLUDE || "")
+  .split(",")
+  .map((m) => m.trim())
+  .filter(Boolean);
+
 export const config = {
   app: {
     // Default to port 3000 if not provided
@@ -36,6 +45,10 @@ export const config = {
   },
   cors: {
     origins: corsOrigins,
+  },
+  routes: {
+    include: routesInclude,
+    exclude: routesExclude,
   },
   jwt: {
     secret: process.env.JWT_SECRET,

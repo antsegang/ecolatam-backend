@@ -8,7 +8,7 @@ EcoLATAM es una iniciativa latinoamericana que integra tecnología y responsabil
 
 Este repositorio implementa un API REST desarrollado con Node.js y Express que soporta las funcionalidades de la plataforma EcoLATAM. Proporciona endpoints para gestionar usuarios, negocios y reseñas, y utiliza JSON Web Tokens (JWT) para autenticar solicitudes. La información se almacena en una base de datos MySQL.
 
-Las rutas del API se cargan automáticamente desde `src/modules` y se montan bajo el prefijo `/api/v1`. Cada carpeta que contenga un archivo `routes.js` expone sus endpoints usando su nombre de carpeta como segmento de ruta.
+Las rutas del API se cargan automáticamente desde `src/modules` y se montan bajo el prefijo `/api/v1`. Cada carpeta que contenga un archivo `routes.js` expone sus endpoints usando su nombre de carpeta como segmento de ruta. Es posible incluir o excluir módulos específicos mediante las variables de entorno `ROUTES_INCLUDE` y `ROUTES_EXCLUDE`.
 
 ## Variables de entorno
 
@@ -30,9 +30,12 @@ CORS_ORIGIN=<origen1,origen2> # obligatorio
 LOG_LEVEL=info               # obligatorio
 LOG_EXTERNAL_URL=<url_logs>  # obligatorio
 ALLOWED_TABLES=<tabla1,tabla2> # opcional
+ROUTES_INCLUDE=<mod1,mod2>   # opcional, carga solo estos módulos de rutas
+ROUTES_EXCLUDE=<mod3,mod4>   # opcional, omite estos módulos de rutas
 ```
 
 Las variables marcadas como **obligatorias** deben definirse; de lo contrario la aplicación no iniciará. `JWT_EXPIRES_IN` acepta cualquier valor soportado por `jsonwebtoken` y expira en `1h` si no se indica. `JWT_ALGORITHM` define el algoritmo de firma usado al emitir y validar tokens, y por defecto es `HS256`. Si se configuran `JWT_AUDIENCE` o `JWT_ISSUER`, los tokens incluirán y verificarán esos reclamos. `MYSQL_PASSWORD` solo es obligatorio cuando `NODE_ENV` es `production`. `CORS_ORIGIN` acepta una lista separada por comas de orígenes permitidos. `ALLOWED_TABLES` permite restringir las tablas accesibles; si no se define, se cargan todas las tablas existentes.
+`ROUTES_INCLUDE` y `ROUTES_EXCLUDE` permiten controlar qué módulos de rutas se cargan en cada entorno.
 
 ## Instalación y ejecución
 

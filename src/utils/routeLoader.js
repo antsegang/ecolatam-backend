@@ -75,7 +75,11 @@ function loadFromTempAsTranspiledCjs(routesPath) {
   try {
     return requireCjs(tempCjs);
   } finally {
-    try { fs.unlinkSync(tempCjs); } catch {}
+    try {
+      fs.unlinkSync(tempCjs);
+    } catch (err) {
+      // ignore temp file removal errors
+    }
   }
 }
 
@@ -99,21 +103,27 @@ export default async function loadRoutes(
   app,
   basePath = '',
   modulesDir = path.resolve('src/modules'),
-  { debug = false } = {}
+  { debug = false, include = [], exclude = [] } = {}
 ) {
   const baseNorm = normalizeBase(basePath);
 
   const entries = fs.existsSync(modulesDir)
     ? fs.readdirSync(modulesDir, { withFileTypes: true })
     : [];
-  const dirs = entries.filter(e => e.isDirectory());
+  let dirs = entries.filter(e => e.isDirectory()).map(e => e.name);
+
+  if (Array.isArray(include) && include.length) {
+    dirs = dirs.filter(d => include.includes(d));
+  }
+  if (Array.isArray(exclude) && exclude.length) {
+    dirs = dirs.filter(d => !exclude.includes(d));
+  }
 
   const mounted = [];
 
   for (const dir of dirs) {
     const routesPath =
-      findRoutesFile(modulesDir, dir.name) ||
-      path.join(modulesDir, dir.name, 'routes.js');
+      findRoutesFile(modulesDir, dir) || path.join(modulesDir, dir, 'routes.js');
 
     if (!fs.existsSync(routesPath)) continue;
 
@@ -142,7 +152,7 @@ export default async function loadRoutes(
 
     const candidate = mod?.default ?? mod?.router ?? mod;
     if (isExpressRouter(candidate)) {
-      const mountPath = buildMountPath(baseNorm, dir.name);
+      const mountPath = buildMountPath(baseNorm, dir);
       app.use(mountPath, candidate);
       mounted.push(mountPath);
     }
@@ -150,7 +160,6 @@ export default async function loadRoutes(
 
   if (debug && mounted.length) {
     // Útil para verificar en consola qué se montó en runtime.
-    // eslint-disable-next-line no-console
     console.log('[routeLoader] mounted:', mounted);
   }
 }
