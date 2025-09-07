@@ -16,7 +16,7 @@ function checkKYCUser() {
 
 function checkOwner() {
   async function middleware(req, res, next) {
-    const id = req.body.id;
+    const id = req.body.id_user;
 
     try {
       await auth.checkOwner.confirmToken(req, id);

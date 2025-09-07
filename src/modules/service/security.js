@@ -2,7 +2,7 @@ import auth from "../../auth/index.js";
 
 function checkAdmin() {
   async function middleware(req, res, next) {
-    const id = req.body.id;
+    const id = req.body.approved_by;
     try {
       await auth.checkAdmin.confirmToken(req, id);
       next();
