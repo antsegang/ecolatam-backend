@@ -4,6 +4,8 @@ import auth from "../../auth/index.js";
 import { error as createError } from "../../middlewares/errors.js";
 
 const TABLE = "auth";
+const USERS_TABLE = "users";
+const ROLES_TABLES = ["admin", "superadmin", "vip", "tour_guide", "volunteer", "csagent", "inspector"];
 const SALT_ROUNDS = 10;
 export default function (inyectedDB) {
   let db = inyectedDB || mysql;
@@ -28,13 +30,29 @@ export default function (inyectedDB) {
       const passwordMatch = await bcrypt.compare(password, hash);
       if (passwordMatch) {
         const id = data[0].id;
-        const datos = data[0];
+        await validateTable(USERS_TABLE)
+        const user = await db.query(
+          "SELECT * FROM ?? WHERE id = ? LIMIT 1",
+          [USERS_TABLE, id]
+        );
+        let roles = [];
+        for (const roleTable of ROLES_TABLES) {
+          await validateTable(roleTable);
+          const roleData = await db.query(
+            "SELECT * FROM ?? WHERE id_user = ? LIMIT 1",
+            [roleTable, id]
+          );
+          if (roleData.length > 0) {
+            roles.push(roleTable);
+          }
+        }
         // Generar un token solo con campos necesarios
         const token = auth.assignToken({
           id: data[0].id,
           username: data[0].username,
-          role: data[0].role,
+          roles: roles,
         });
+        const datos = {...user[0], username: data[0].username, email: data[0].email, roles: roles};
         return { token, id, datos };
       }
       throw createError("Información inválida", 401);
